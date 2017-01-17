@@ -1,0 +1,115 @@
+<html>
+<head>
+<title>searchStudentAnswer</title>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<style type="text/css">
+#main {
+	padding: 15px;
+	height: 100%;
+	overflow: hidden;
+	color: black;
+}
+
+body {
+	background-color: #F5F5F5;
+}
+
+h2 {
+	font-size: 35px;
+	font-family: "Cambria"
+}
+
+table {
+	width: 100%;
+	text-align: left;
+}
+
+td {
+	width: 50%;
+	text-align: left;
+	font-size: 30px;
+}
+
+button {
+	background-color: #4CAF50;
+	border: none;
+	color: white;
+	text-decoration: none;
+	margin: 4px 0;
+	padding: 1% 3%;
+	width: 10%;
+	height: 7%;
+	font-size: 20px;
+	cursor: pointer;
+}
+
+#back {
+	text-align: center;
+}
+</style>
+</head>
+
+<body>
+
+	<div id="main">
+		<h2>Searched student :</h2>
+		<table>
+			<tbody>
+
+				<tr>
+					<td>Student:</td>
+					<td id='found'></td>
+				</tr>
+
+				<tr>
+					<td>First Name:</td>
+					<td id='fn'></td>
+				</tr>
+
+				<tr>
+					<td>Middle Name:</td>
+					<td id='mn'></td>
+				</tr>
+				<tr>
+					<td>Last Name:</td>
+					<td id='ln'></td>
+				</tr>
+				<tr>
+					<td>Faculty:</td>
+					<td id='ft'></td>
+				</tr>
+				<tr>
+					<td>Faculty Number:</td>
+					<td id='fac'></td>
+				</tr>
+				<tr>
+					<td>Education type:</td>
+					<td id='et'></td>
+				</tr>
+
+			</tbody>
+		</table>
+		<button id="back" onclick="goBack();">Back</button>
+	</div>
+
+	<script>
+		function goBack() {
+			window.history.back();
+		}
+
+		$(function() {
+			$.get("searchStudent", function(data) {
+				var student = JSON.parse(data);
+				$("#found").html(student.found);
+				$("#fn").html(student.firstName);
+				$("#mn").html(student.middleName);
+				$("#ln").html(student.lastName);
+				$("#ft").html(student.faculty);
+				$("#fac").html(student.facultyNumber);
+				$("#et").html(student.educationType);
+				console.log(student);
+			});
+		})
+	</script>
+</body>
+</html>

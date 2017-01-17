@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>RegisterAdmin</title>
+<style type="text/css">
+body {
+	background-color: #F5F5F5;
+}
+
+input {
+	width: 50%;
+	height: 50%;
+	padding: 12px 20px;
+	margin: 8px 0;
+	box-sizing: border-box;
+}
+
+input[type="text"] {
+	font-size: 20px;
+}
+
+input[type="password"] {
+	font-size: 20px;
+}
+
+h2 {
+	font-size: 35px;
+	font-family: "Cambria"
+}
+
+input[type="submit"] {
+	background-color: #4CAF50;
+	border: none;
+	color: white;
+	text-decoration: none;
+	margin: 4px 0;
+	cursor: pointer;
+	border: none;
+	font-size: 20px;
+}
+
+span {
+	font-size: 25px;
+	color: red;
+}
+
+form {
+	text-align: left;
+}
+
+#backBtn {
+	text-align: left;
+}
+</style>
+</head>
+<body>
+	<div id="main">
+		<form name="form" id="form" action="registerAdminServlet"
+			onsubmit="return validateForm()" method="post">
+			<header>
+				<h2>Admin Registration:</h2>
+			</header>
+			<div>
+				<input type="text" name="userName" onkeyup="validateUserName(this);"
+					placeholder="Username"><span id="userNameError"></span>
+			</div>
+
+			<div>
+				<input type="password" name="password" id="password"
+					onblur="checkMatching(this);" placeholder="Password"><span
+					id="passwordError"></span>
+			</div>
+
+			<div>
+				<input type="password" name="passwordConfirm" id="passwordConfirm"
+					onblur="checkMatching(this);" placeholder="Password Confirmation"><span
+					id="passwordConfirmError"></span>
+			</div>
+
+			<div>
+				<input type="submit" id="registerBtn" value="Registrer">
+			</div>
+		</form>
+	</div>
+
+	<script type="text/javascript">
+		function validateUserName(inputText) {
+			var userRegex = /^[a-zA-Z0-9]+$/;
+			if (inputText.value.match(userRegex)) {
+				document.getElementById("userNameError").innerHTML = "";
+				document.getElementById("registerBtn").disabled = false;
+				return true;
+			} else {
+				document.getElementById("userNameError").innerHTML = "Incorrect username. UserName must only consisnts of letters A-Z a-z or numbers";
+				document.form.userName.focus();
+				document.getElementById("registerBtn").disabled = true;
+				return false;
+			}
+		}
+		function checkMatching(input) {
+			switch (input.id) {
+			case "password":
+				if (input.value != document.getElementById('passwordConfirm').value) {
+					document.getElementById("passwordError").innerHTML = "  Passwords must be matching";
+					document.getElementById("registerBtn").disabled = true;
+				} else {
+					document.getElementById("passwordError").innerHTML = "";
+					document.getElementById("registerBtn").disabled = false;
+				}
+				break;
+			case "passwordConfirm":
+				if (input.value != document.getElementById('password').value) {
+					document.getElementById("passwordConfirmError").innerHTML = "	Passwords must be matching";
+					document.getElementById("registerBtn").disabled = true;
+				} else {
+					document.getElementById("passwordConfirmError").innerHTML = "";
+					document.getElementById("registerBtn").disabled = false;
+				}
+				break;
+			}
+
+		}
+
+		function validateForm() {
+			var password = document.forms["form"]["password"].value;
+			var passwordConfig = document.forms["form"]["passwordConfirm"].value;
+			var userName = document.forms["form"]["userName"].value;
+
+			if (userName == "") {
+				document.getElementById("userNameError").innerHTML = " Username field is empty.";
+				return false;
+			}
+
+			if (password == "") {
+				document.getElementById("passwordError").innerHTML = "  Password field is empty.";
+				return false;
+			}
+
+			if (passwordConfig == "") {
+				document.getElementById("passwordConfirmError").innerHTML = "  Password confirm field is empty.";
+				return false;
+			}
+		}
+	</script>
+
+</body>
+</html>

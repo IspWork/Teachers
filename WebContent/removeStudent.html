@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Remove Student</title>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<style type="text/css">
+#main {
+	text-align: left;
+	margin-top: 5%;
+}
+
+body {
+	background-color: #F5F5F5;
+}
+
+input {
+	width: 50%;
+	height: 50%;
+	padding: 12px 20px;
+	margin: 8px 0;
+	box-sizing: border-box;
+}
+
+input[type="text"] {
+	font-size: 20px;
+}
+
+h2 {
+	font-size: 35px;
+	font-family: "Cambria"
+}
+
+input[type="submit"] {
+	background-color: #4CAF50;
+	border: none;
+	color: white;
+	text-decoration: none;
+	margin: 4px 0;
+	cursor: pointer;
+	border: none;
+	font-size: 20px;
+	background-color: #4CAF50;
+	background-color: #4CAF50;
+	width: 25%;
+}
+
+span {
+	font-size: 25px;
+	color: red;
+}
+
+form {
+	text-align: left;
+}
+
+#backBtn {
+	text-align: left;
+}
+
+select {
+	width: 50%;
+	padding: 16px 20px;
+	border: none;
+	border-radius: 4px;
+	background-color: white;
+	border: 1px solid gray;
+	font-size: 20px;
+}
+</style>
+</head>
+<body>
+	<div id="main">
+		<header>
+			<h2>Remove Student By Faculty Number:</h2>
+		</header>
+		<form name="removeStudent" action="removeStudentServlet" method="post">
+
+			<div>
+				<input type="text" name="facultyNumber"
+					onkeyup="validateNumber(this)" placeholder="Faculty Number"><span
+					id="facultyNumberError"></span>
+			</div>
+			<div>
+				<input type="submit" id="removeBtn" value="Remove">
+			</div>
+		</form>
+		<div>
+			<input type="submit" onclick="goBack();" value="Back">
+		</div>
+	</div>
+
+
+	<script type="text/javascript">
+		function goBack() {
+			window.history.back();
+		}
+
+		function validateNumber(inputText) {
+			var regex = /^\d+$/;
+			if (inputText.value.match(regex)) {
+				document.getElementById("facultyNumberError").innerHTML = "";
+				document.getElementById("removeBtn").disabled = false;
+				return true;
+			} else {
+				document.getElementById("facultyNumberError").innerHTML = "	Faculty number must consist only of digits";
+				document.removeStudent.facultyNumber.focus();
+				document.getElementById("removeBtn").disabled = true;
+				return false;
+			}
+
+		}
+	</script>
+</body>
+</html>

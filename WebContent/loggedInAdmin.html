@@ -1,0 +1,100 @@
+<html>
+<head>
+<title>LoggedInAdmin</title>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<style type="text/css">
+#main {
+	text-align: center;
+	margin-top: 12%;
+}
+
+h1 {
+	font-size: 40px;
+	font-family: "Cambria"
+}
+
+ul {
+	list-style: none;
+}
+
+body {
+	background-color: #F5F5F5;
+}
+
+button {
+	background-color: #4CAF50;
+	border: none;
+	color: white;
+	text-decoration: none;
+	margin: 4px 0;
+	padding: 1% 3%;
+	width: 25%;
+	height: 10%;
+	font-size: 20px;
+	cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+	<div id="main">
+		<div id="nav">
+			<ul>
+			</ul>
+		</div>
+		<div>
+			<button id="addStudent">Add Student.</button>
+			<button id="removeStudent">Remove Student.</button>
+			<button id="searchForStudent">Search for Student.</button>
+		</div>
+		<div>
+			<button id="addTeacher">Add Teacher.</button>
+			<button id="removeTeacher">Remove Teacher.</button>
+			<button id="teacherList">Teacher List</button>
+		</div>
+		<div>
+			<button id="studentList">Student List</button>
+		</div>
+	</div>
+
+
+	<script>
+	document.getElementById("addStudent").onclick = function() {
+		location.href = "http://localhost:8080/Teachers/studentAdd.html";
+	};
+	
+	document.getElementById("removeStudent").onclick = function() {
+		location.href = "http://localhost:8080/Teachers/removeStudent.html";
+	};
+	
+	document.getElementById("searchForStudent").onclick = function() {
+		location.href = "http://localhost:8080/Teachers/searchStudent.html";
+	};
+	
+	document.getElementById("addTeacher").onclick = function() {
+		location.href = "http://localhost:8080/Teachers/teacherRegistration.html";
+	};
+	
+	document.getElementById("removeTeacher").onclick = function() {
+		location.href = "http://localhost:8080/Teachers/removeTeacher.html";
+	};
+	
+	document.getElementById("teacherList").onclick = function() {
+		location.href = "http://localhost:8080/Teachers/teacherListAdmin.html";
+	};
+	
+	document.getElementById("studentList").onclick = function() {
+		location.href = "http://localhost:8080/Teachers/studentListAdmin.html";
+	};
+	
+	$(function() {
+		$.get("checkAdmin", function(data) {
+			var obj = JSON.parse(data);
+			$("#nav ul").append($(`<li><h1>User: ${obj.userName}</h1></li>`));
+		});
+	})
+		
+		
+	</script>
+</body>
+</html>

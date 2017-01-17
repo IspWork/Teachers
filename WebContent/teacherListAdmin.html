@@ -1,0 +1,295 @@
+<html>
+<head>
+<title>TeacherListAdmin</title>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<style type="text/css">
+div {
+	font-size: 35px;
+	font-family: "Cambria"
+}
+
+#nav {
+	background-color: #6699ff;
+	border-radius: 10px;
+	padding: 10px;
+	height: 100%;
+	float: left;
+	width: 50%;
+	color: white;
+	margin-right: 10px;
+	text-align: center;
+}
+
+#details {
+	background-color: #99ff99;
+	border-radius: 10px;
+	padding: 10px;
+	height: 100%;
+	overflow: hidden;
+	color: black;
+}
+
+ul {
+	list-style: none;
+	text-align: left;
+}
+
+a:hover {
+	color: black;
+}
+
+input {
+	font-size: 20px;
+}
+
+table {
+	padding: 5px;
+	border: 3px solid #AE0489;
+	border-radius: 10px;
+	width: 100%;
+}
+
+td {
+	width: 50%;
+	text-align: left;
+	font-size: 20px;
+}
+
+th {
+	width: 50%;
+	text-align: left;
+	font-size: 20px;
+}
+
+select {
+	width: 90%;
+	padding: 12px 16px;
+	border: none;
+	border-radius: 4px;
+	background-color: white;
+	border: 1px solid gray;
+	font-size: 15px;
+}
+
+button {
+	background-color: #154890;
+	border: none;
+	color: white;
+	text-decoration: none;
+	margin: 4px 0;
+	cursor: pointer;
+	border: none;
+	font-size: 20px;
+}
+
+span {
+	color: red;
+	font-size: 20px;
+}
+</style>
+</head>
+
+<body style="margin: 5px;">
+	<div id="nav">
+		<h5>Teacher List:</h5>
+		<ul>
+		</ul>
+	</div>
+
+	<div id="details">
+		<h5>Details about teacher:</h5>
+		<form id="table" action="editTeacher" method="post">
+			<table>
+				<tr>
+					<th>Attribute</th>
+					<th>Value</th>
+				</tr>
+				<tbody>
+
+					<tr>
+						<td>User name:</td>
+						<td id='un'><input id="userName" name="userName"
+							onkeyup="validateUserName(this)" readonly="readonly"></td>
+					</tr>
+
+					<tr>
+						<td>Teacher ID:</td>
+						<td id='ti'><input id="teacherID" name="teacherID"
+							readonly="readonly"></td>
+					</tr>
+					<tr>
+						<td>Password:</td>
+						<td id='pass'><input id="password" name="password"
+							readonly="readonly"></td>
+					</tr>
+
+					<tr>
+						<td>First name:</td>
+						<td id='fn'><input id="firstName" name="firstName"
+							onkeyup="validateName(this)" readonly="readonly"></td>
+					</tr>
+
+					<tr>
+						<td>Middle name:</td>
+						<td id='mn'><input id="middleName" name="middleName"
+							onkeyup="validateName(this)" readonly="readonly"></td>
+					</tr>
+					<tr>
+						<td>Last name:</td>
+						<td id='ln'><input id="lastName" name="lastName"
+							onkeyup="validateName(this)" readonly="readonly"></td>
+					</tr>
+					<tr>
+						<td>Email:</td>
+						<td id='em'><input id="Email" name="Email"
+							onkeyup="validateEmail(this)" readonly="readonly"></td>
+					</tr>
+					<tr>
+						<td>Phone Number:</td>
+						<td id='ph'><input id="phone" name="phone"
+							onkeyup="validateNumber(this)" readonly="readonly"></td>
+					</tr>
+					<tr>
+						<td>Faculty:</td>
+						<td id='ft'><input id="faculty" name="faculty"
+							onkeyup="validateName(this)" readonly="readonly"></td>
+					</tr>
+
+				</tbody>
+			</table>
+			<button id="saveChange" name="saveChange">Save</button>
+			<span id="error"></span>
+		</form>
+
+		<div id="buttons">
+			<button id="enableEditBtn" name="enableEditBtn" onclick="enable();">Enable
+				Editing</button>
+			<button id="disableEditBtn" name="disableEditBtn"
+				onclick="disable();">Disable Editing</button>
+
+		</div>
+	</div>
+
+
+
+
+	<script>	
+	$(function(){
+		$.get("readTeacher", function(data) {
+			var obj=JSON.parse(data);
+			for (let i of obj){
+				$("#nav ul").append($(`<li><a onclick="selectTeacher(${i.id})">${i.firstName} ${i.middleName} ${i.lastName}</a></li>`));	
+			}
+		});
+	})
+	function selectTeacher(id) {
+		$.ajax({
+				url: "selectTeacherProfile?id=" + id, 
+				success: function(data){
+					var teacher = JSON.parse(data);
+					$("#userName").val(teacher.userName);
+					$("#teacherID").val(teacher.teacherId);
+					$("#password").val(teacher.password);
+					$("#firstName").val(teacher.firstName);
+					$("#middleName").val(teacher.middleName);
+					$("#lastName").val(teacher.lastName);
+					$("#Email").val(teacher.Email);
+					$("#phone").val(teacher.phone);
+					$("#faculty").val(teacher.faculty)
+				}
+		});			
+	}
+	
+	function validateUserName(inputText) {
+		var userRegex = /^[a-zA-Z0-9]+$/;
+		if (inputText.value.match(userRegex)) {
+			document.getElementById("error").innerHTML = "";
+			document.getElementById("saveChange").disabled = false;
+			return true;
+		} else {
+			document.getElementById("error").innerHTML = "Incorrect username. UserName must only consisnts of letters A-Z a-z or numbers";
+			document.getElementById("saveChange").disabled = true;
+			return false;
+		}
+	}
+
+	function validateName(inputText) {
+		var nameRegex = /^[a-zA-Z]+$/;
+		var nameAndSpaceRegex = /^[a-zA-Z\s]*$/;
+
+		if (inputText.value.match(nameRegex) || inputText.value.match(nameAndSpaceRegex)) {
+			document.getElementById("error").innerHTML = "";
+			document.getElementById("saveChange").disabled = false;
+			return true;
+		} else {
+
+			switch (inputText.id) {
+			case "firstName":
+				document.getElementById("error").innerHTML = "The first name field must only consisnts of letters A-Z a-z";
+				break;
+			case "middleName":
+				document.getElementById("error").innerHTML = "The middle name field must only consisnts of letters A-Z a-z";
+				break;
+			case "lastName":
+				document.getElementById("error").innerHTML = "The last name field must only consisnts of letters A-Z a-z";
+				break;
+			case "faculty":
+				document.getElementById("error").innerHTML = "Faculty field must only consisnts of letters A-Z a-z";
+				break;
+			}
+			document.getElementById("saveChange").disabled = true;
+			return false;
+		}
+	}
+
+	function validateEmail(inputText) {
+		var emailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+		if (inputText.value.match(emailformat)) {
+			document.getElementById("error").innerHTML = "";
+			document.getElementById("saveChange").disabled = false;
+			return true;
+		} else {
+			document.getElementById("error").innerHTML = "Incorrect email";
+			document.getElementById("saveChange").disabled = true;
+			return false;
+		}
+	}
+
+	function validateNumber(inputText) {
+		var regex = /^\d+$/;
+		switch (inputText.id) {
+		case "identification":
+			if (inputText.value.match(regex)) {
+				document.getElementById("error").innerHTML = "";
+				document.getElementById("saveChange").disabled = false;
+				return true;
+			} else {
+				document.getElementById("error").innerHTML = "Number must consist only of digits";
+				document.getElementById("saveChange").disabled = true;
+				return false;
+			}
+			break;
+		case "phone":
+			if (inputText.value.match(regex)) {
+				document.getElementById("error").innerHTML = "";
+				document.getElementById("saveChange").disabled = false;
+				return true;
+			} else {
+				document.getElementById("error").innerHTML = "Number must consist only of digits";
+				document.getElementById("saveChange").disabled = true;
+				return false;
+			}
+
+			break;
+		}
+	}
+	
+	function enable() {
+		$("#table :input").not("[id=teacherID]").prop('readonly', false);
+	}
+	function disable() {
+		$("#table :input").not("[id=teacherID]").prop('readonly', true);
+	}
+	</script>
+</body>
+</html>

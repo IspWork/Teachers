@@ -1,0 +1,135 @@
+<html>
+<head>
+<title>TeacherList</title>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<style type="text/css">
+div {
+	font-size: 35px;
+	font-family: "Cambria"
+}
+
+#nav {
+	background-color: #6699ff;
+	border-radius: 10px;
+	padding: 10px;
+	height: 100%;
+	float: left;
+	width: 50%;
+	color: white;
+	margin-right: 10px;
+	text-align: center;
+}
+
+#details {
+	background-color: #99ff99;
+	border-radius: 10px;
+	padding: 10px;
+	height: 100%;
+	overflow: hidden;
+	color: black;
+}
+
+ul {
+	list-style: none;
+	text-align: left;
+}
+
+a:hover {
+	color: black;
+}
+table {
+	padding: 5px;
+	border: 3px solid #AE0489;
+	border-radius: 10px;
+	width: 100%;
+}
+
+td {
+	width: 50%;
+	text-align: left;
+	font-size: 20px;
+}
+
+th {
+	width: 50%;
+	text-align: left;
+	font-size: 20px;
+}
+</style>
+</head>
+
+<body style="margin: 5px;">
+
+	<div id="nav">
+		<h5>Teacher List:</h5>
+		<ul>
+		</ul>
+	</div>
+
+	<div id="details">
+		<h5>Details about teacher:</h5>
+		<table>
+			<tr>
+				<th>Attribute</th>
+				<th>Value</th>
+			</tr>
+			<tbody>
+				<tr>
+					<td>First name:</td>
+					<td id='fn'></td>
+				</tr>
+
+				<tr>
+					<td>Middle name:</td>
+					<td id='mn'></td>
+				</tr>
+				<tr>
+					<td>Last name:</td>
+					<td id='ln'></td>
+				</tr>
+				<tr>
+					<td>Email:</td>
+					<td id='em'></td>
+				</tr>
+				<tr>
+					<td>Phone Number:</td>
+					<td id='ph'></td>
+				</tr>
+				<tr>
+					<td>Faculty:</td>
+					<td id='ft'></td>
+				</tr>
+
+			</tbody>
+
+		</table>
+	</div>
+
+	<script>
+	$(function(){
+		$.get("readTeacher", function(data) {
+			var obj=JSON.parse(data);
+			for (let i of obj){
+				$("#nav ul").append($(`<li><a onclick="selectTeacher(${i.id})">${i.firstName} ${i.middleName} ${i.lastName}</a></li>`));	
+			}
+		});
+	})
+	function selectTeacher(id) {
+		$.ajax({
+				url: "selectTeacherProfile?id=" + id, 
+				success: function(data){
+					var teacher = JSON.parse(data);
+					
+					$("#fn").html(teacher.firstName);
+					$("#mn").html(teacher.middleName);
+					$("#ln").html(teacher.lastName);
+					$("#em").html(teacher.Email);
+					$("#ph").html(teacher.phone);
+					$("#ft").html(teacher.faculty);
+	      			  console.log(teacher);
+				}
+		});			
+	}	
+	</script>
+</body>
+</html>

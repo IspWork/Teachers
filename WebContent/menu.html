@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Login</title>
+<style type="text/css">
+body {
+	background-color: #F5F5F5;
+}
+
+#main {
+	padding-top: 7%;
+}
+
+input {
+	width: 50%;
+	height: 50%;
+	padding: 12px 20px;
+	margin: 8px 0;
+	box-sizing: border-box;
+}
+
+h1 {
+	font-size: 35px;
+	font-family: "Cambria";
+	text-align: center;
+}
+
+#list {
+	text-align: center;
+	margin: auto;
+}
+
+#techerListButton {
+	text-align: center;
+	width: 25%;
+	height: 40px;
+	border: 1px solid green;
+}
+
+#studentListButton {
+	text-align: center;
+	width: 25%;
+	height: 40px;
+	border: 1px solid green;
+}
+
+#loginTeacherButton {
+	text-align: center;
+	padding: 16px 3%;
+}
+
+#loginAdminButton {
+	text-align: center;
+	padding: 16px 3%;
+}
+
+button {
+	background-color: #4CAF50;
+	border: none;
+	color: white;
+	text-decoration: none;
+	margin: 4px 0;
+	cursor: pointer;
+}
+
+span {
+	font-size: 25px;
+	color: red;
+}
+
+form {
+	text-align: center;
+}
+</style>
+</head>
+
+<body>
+
+	<div id="main">
+		<header>
+			<h1 align=left>Login</h1>
+		</header>
+		<div id="list">
+			<button id="techerListButton">Teacher List</button>
+			<button id="studentListButton">Student List</button>
+		</div>
+
+		<form name="userForm" onsubmit="return validateForm()" method="post">
+
+			<div>
+				<input type="text" name="userName" placeholder="Username">
+			</div>
+
+			<div>
+				<span id="usernameError"></span>
+			</div>
+
+			<div>
+				<input type="password" name="password" placeholder="Password">
+			</div>
+			<div>
+				<span id="passwordError"></span>
+			</div>
+			<div>
+				<button id="loginTeacherButton" formaction="checkUser">Login
+					As Teacher</button>
+				<button id="loginAdminButton" formaction="checkAdmin">Login
+					As Admin</button>
+			</div>
+		</form>
+	</div>
+
+	<script type="text/javascript">
+		document.getElementById("techerListButton").onclick = function() {
+			location.href = "http://localhost:8080/Teachers/teacherList.html";
+		};
+		document.getElementById("studentListButton").onclick = function() {
+			location.href = "http://localhost:8080/Teachers/studentList.html";
+		};
+
+		function validateForm() {
+			var password = document.forms["userForm"]["password"].value;
+			var userName = document.forms["userForm"]["userName"].value;
+			document.getElementById("usernameError").innerHTML = "";
+			document.getElementById("passwordError").innerHTML = "";
+			if (userName == "") {
+				document.getElementById("usernameError").innerHTML = "Username is empty.";
+				return false;
+			}
+			if (password == "") {
+				document.getElementById("passwordError").innerHTML = "Password is empty.";
+				return false;
+			}
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Teacher Registration</title>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<style type="text/css">
+body {
+	background-color: #F5F5F5;
+}
+
+input {
+	width: 50%;
+	height: 50%;
+	padding: 12px 20px;
+	margin: 8px 0;
+	box-sizing: border-box;
+}
+
+input[type="text"] {
+	font-size: 20px;
+}
+
+input[type="password"] {
+	font-size: 20px;
+}
+
+h2 {
+	font-size: 35px;
+	font-family: "Cambria"
+}
+
+input[type="submit"] {
+	background-color: #4CAF50;
+	border: none;
+	color: white;
+	text-decoration: none;
+	margin: 4px 0;
+	cursor: pointer;
+	border: none;
+	font-size: 20px;
+}
+
+span {
+	font-size: 25px;
+	color: red;
+}
+
+form {
+	text-align: left;
+}
+
+#backBtn {
+	text-align: left;
+}
+
+select {
+	width: 50%;
+	padding: 16px 20px;
+	border: none;
+	border-radius: 4px;
+	background-color: white;
+	border: 1px solid gray;
+	font-size: 20px;
+}
+</style>
+</head>
+<body>
+	<div id="main">
+		<form name="form" id="form" onsubmit="return validateForm()"
+			action="registerTeacherServlet" method="post">
+			<header>
+				<h2>Teacher Registration:</h2>
+			</header>
+			<div>
+				<input type="text" name="userName" onkeyup="validateUserName(this);"
+					placeholder="Username"><span id="userNameError"></span>
+			</div>
+
+			<div>
+				<input type="text" name="identification" id="identification"
+					onkeyup="validateNumber(this);" placeholder="Teacher ID"><span
+					id="numberErrorID"></span>
+			</div>
+
+			<div>
+				<input type="text" name="firstName" id="firstName"
+					onkeyup="validateName(this);" placeholder="First Name"><span
+					id="firstNameError"></span>
+			</div>
+
+			<div>
+				<input type="text" name="middleName" id="middleName"
+					onkeyup="validateName(this);" placeholder="Middle Name"><span
+					id="middleNameError"></span>
+			</div>
+
+			<div>
+				<input type="text" name="lastName" id="lastName"
+					onkeyup="validateName(this);" placeholder="Last Name"><span
+					id="lastNameError"></span>
+			</div>
+
+			<div>
+				<input type="text" name="Email" onblur="validateEmail(this);"
+					placeholder="E-mail"><span id="emailError"></span>
+			</div>
+
+			<div>
+				<input type="text" id="phone" name="phone"
+					onkeyup="validateNumber(this);" placeholder="Phone Number"><span
+					id="numberErrorPhone"></span>
+			</div>
+
+
+			<div>
+				<select id="faculty" name="faculty">
+					<option selected disabled>Select faculty here:</option>
+					<option>Faculty of Automatics</option>
+					<option>Faculty of Electrical Engineering</option>
+					<option>Faculty of Computer Systems and Control</option>
+					<option>Faculty of Telecommunications</option>
+					<option>Faculty of Electronic Engineering and Technologies</option>
+				</select><span id="facultyError"></span>
+			</div>
+
+			<div>
+				<input type="password" name="password" id="password"
+					onblur="checkMatching(this);" placeholder="Password"><span
+					id="passwordError"></span>
+			</div>
+
+			<div>
+				<input type="password" name="passwordConfirm" id="passwordConfirm"
+					onblur="checkMatching(this);" placeholder="Password Confirmation"><span
+					id="passwordConfirmError"></span>
+			</div>
+
+			<div>
+				<input type="submit" id="registerBtn" value="Registrer">
+			</div>
+		</form>
+		<div>
+			<input type="submit" onclick="goBack();" value="Back">
+		</div>
+	</div>
+	<script type="text/javascript">
+		function goBack() {
+			window.history.back();
+		}
+
+		function validateUserName(inputText) {
+			var userRegex = /^[a-zA-Z0-9]+$/;
+			if (inputText.value.match(userRegex)) {
+				document.getElementById("userNameError").innerHTML = "";
+				document.getElementById("registerBtn").disabled = false;
+				return true;
+			} else {
+				document.getElementById("userNameError").innerHTML = "Incorrect username. UserName must only consisnts of letters A-Z a-z or numbers";
+				document.getElementById("registerBtn").disabled = true;
+				return false;
+			}
+		}
+
+		function validateName(inputText) {
+			var nameRegex = /^[a-zA-Z]+$/;
+
+			if (inputText.value.match(nameRegex)) {
+				switch (inputText.id) {
+				case "firstName":
+					document.getElementById("firstNameError").innerHTML = "";
+					break;
+				case "middleName":
+					document.getElementById("middleNameError").innerHTML = "";
+					break;
+				case "lastName":
+					document.getElementById("lastNameError").innerHTML = "";
+					break;
+				}
+				document.getElementById("registerBtn").disabled = false;
+				return true;
+			} else {
+
+				switch (inputText.id) {
+				case "firstName":
+					document.getElementById("firstNameError").innerHTML = "The first name field must only consisnts of letters A-Z a-z";
+					break;
+				case "middleName":
+					document.getElementById("middleNameError").innerHTML = "The middle name field must only consisnts of letters A-Z a-z";
+					break;
+				case "lastName":
+					document.getElementById("lastNameError").innerHTML = "The last name field must only consisnts of letters A-Z a-z";
+					break;
+				}
+				document.getElementById("registerBtn").disabled = true;
+				return false;
+			}
+		}
+
+		function validateEmail(inputText) {
+			var emailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+			if (inputText.value.match(emailformat)) {
+				document.getElementById("emailError").innerHTML = "";
+				document.getElementById("registerBtn").disabled = false;
+				return true;
+			} else {
+				document.getElementById("emailError").innerHTML = "Incorrect email";
+				document.form.Email.focus();
+				document.getElementById("registerBtn").disabled = true;
+				return false;
+			}
+		}
+
+		function validateNumber(inputText) {
+			var regex = /^\d+$/;
+			switch (inputText.id) {
+			case "identification":
+				if (inputText.value.match(regex)) {
+					document.getElementById("numberErrorID").innerHTML = "";
+					document.getElementById("registerBtn").disabled = false;
+					return true;
+				} else {
+					document.getElementById("numberErrorID").innerHTML = "Number must consist only of digits";
+					document.getElementById("registerBtn").disabled = true;
+					return false;
+				}
+				break;
+			case "phone":
+				if (inputText.value.match(regex)) {
+					document.getElementById("numberErrorPhone").innerHTML = "";
+					document.getElementById("registerBtn").disabled = false;
+					return true;
+				} else {
+					document.getElementById("numberErrorPhone").innerHTML = "Number must consist only of digits";
+					document.getElementById("registerBtn").disabled = true;
+					return false;
+				}
+
+				break;
+			}
+		}
+
+		function checkMatching(input) {
+
+			switch (input.id) {
+			case "password":
+				if (input.value != document.getElementById('passwordConfirm').value) {
+					document.getElementById("passwordError").innerHTML = "  Passwords must be matching";
+					document.getElementById("registerBtn").disabled = true;
+				} else {
+					document.getElementById("passwordError").innerHTML = "";
+					document.getElementById("registerBtn").disabled = false;
+				}
+				break;
+			case "passwordConfirm":
+				if (input.value != document.getElementById('password').value) {
+					document.getElementById("passwordConfirmError").innerHTML = "	Passwords must be matching";
+					document.getElementById("registerBtn").disabled = true;
+				} else {
+					document.getElementById("passwordConfirmError").innerHTML = "";
+					document.getElementById("registerBtn").disabled = false;
+				}
+				break;
+			}
+
+		}
+
+		function validateForm() {
+			var pass = document.forms["form"]["password"].value;
+			var passConfig = document.forms["form"]["passwordConfirm"].value;
+			var fac = document.forms["form"]["faculty"].value;
+			var ph = document.forms["form"]["phone"].value;
+			var email = document.forms["form"]["Email"].value;
+			var lastName = document.forms["form"]["lastName"].value;
+			var middleName = document.forms["form"]["middleName"].value;
+			var firstName = document.forms["form"]["firstName"].value;
+			var teacherId = document.forms["form"]["identification"].value;
+			var userName = document.forms["form"]["userName"].value;
+
+			if (userName == "") {
+				document.getElementById("userNameError").innerHTML = " Username field is empty.";
+				return false;
+			}
+
+			if (teacherId == "") {
+				document.getElementById("numberError").innerHTML = " Teacher ID field is empty.";
+				return false;
+			}
+
+			if (firstName == "") {
+				document.getElementById("firstNameError").innerHTML = " First name field is empty.";
+				return false;
+			}
+
+			if (middleName == "") {
+				document.getElementById("middleNameError").innerHTML = " Middle name field is empty.";
+				return false;
+			}
+
+			if (lastName == "") {
+				document.getElementById("lastNameError").innerHTML = " Last name field is empty.";
+				return false;
+			}
+
+			if (email == "") {
+				document.getElementById("emailError").innerHTML = " Email field is empty.";
+				return false;
+			}
+
+			if (ph == "") {
+				document.getElementById("numberError").innerHTML = "  Phone number field is empty.";
+				return false;
+			}
+
+			if (fac == "Select faculty here:") {
+				document.getElementById("facultyError").innerHTML = "  Faculty field is empty.";
+				return false;
+			}
+
+			if (pass == "") {
+				document.getElementById("passwordError").innerHTML = "  Password field is empty.";
+				return false;
+			}
+
+			if (passConfig == "") {
+				document.getElementById("passwordConfirmError").innerHTML = "  Password confirm field is empty.";
+				return false;
+			}
+		}
+	</script>
+</body>
+</html>
